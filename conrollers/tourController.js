@@ -47,7 +47,7 @@ exports.getTour = (req, res) => {
   //   }
   // });
 };
-exports.createTour = (req, res) => {
+exports.createTour = async (req, res) => {
   // console.log(req.body);
   // res.send(`done`);
   // const newId = tours[tours.length - 1].id + 1;
@@ -57,12 +57,25 @@ exports.createTour = (req, res) => {
   //   `${__dirname}/dev-data/data/tours-simple.json`,
   //   JSON.stringify(tours),
   // err => {
-  res.status(201).json({
-    status: `success`
-    // data: {
-    //   tour: newTour
-    // }
-  });
+
+  // const newTour = new Tour({});
+  // newTour.save;
+
+  try {
+    const newTour = await Tour.create(req.body);
+    res.status(201).json({
+      status: `success`,
+      data: {
+        tour: newTour
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      // Message: err
+      Message: 'invalid data sent'
+    });
+  }
 };
 //   );
 // };
